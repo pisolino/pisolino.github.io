@@ -1,14 +1,21 @@
 version: 2
 jobs:
-  build:
+  polling-build:
     docker:
       - image: debian:stretch
     steps:
-      - checkout
       - run:
-          name: Greeting
-          command: echo Hello, world.
-      - run:
-          name: Print the Current Time
-          command: date
-
+          name: Jekyll Build
+          command: echo bundle exec jekyll build
+workflows:
+  version: 2
+  scheduled-workflow:
+    triggers:
+      - schedule:
+          cron: "0,5,10,15,20,25,30,35,40,45,50,55 * * * *"
+          filters:
+            branches:
+              only:
+                - master
+    jobs:
+      - polling-build
