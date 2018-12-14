@@ -1,0 +1,21 @@
+version: 2
+jobs:
+  polling-build:
+    docker:
+      - image: debian:stretch
+    steps:
+      - run:
+          name: Jekyll Build
+          command: sleep 10; echo bundle exec jekyll build
+workflows:
+  version: 2
+  scheduled-workflow:
+    triggers:
+      - schedule:
+          cron: "1,11,21,31,41,51 * * * *"
+          filters:
+            branches:
+              only:
+                - master
+    jobs:
+      - polling-build
